@@ -1,8 +1,11 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
 
+import Chart from "../components/Chart";
+
 import { TemplateData } from "../types/entities";
 import { getCurrency } from "../utils/currency";
+import { chartToImage } from "../utils/chart";
 
 const styles = StyleSheet.create({
   rowAlignCenter: {
@@ -74,6 +77,8 @@ interface TableProps {
 }
 
 function Page4({ data }: TableProps): JSX.Element {
+  const transactionsChartUrl = chartToImage("transactions-chart");
+
   return (
     <View>
       <View style={styles.titleWrapper}>
@@ -102,6 +107,16 @@ function Page4({ data }: TableProps): JSX.Element {
           </View>
         ))}
       </View>
+
+      <View style={[styles.titleWrapper, { marginTop: "30px" }]}>
+        <Text style={styles.title}>Comparativo Mensal</Text>
+
+        <Text style={styles.subtitle}>6 meses</Text>
+      </View>
+
+      <View style={styles.titleLine} />
+
+      <Image src={transactionsChartUrl} />
     </View>
   );
 }
