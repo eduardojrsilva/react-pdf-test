@@ -46,7 +46,7 @@ function Chart(): JSX.Element {
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="month" />
       <YAxis />
-      <Line type="monotone" dataKey="invoice" stroke="#820ad1" activeDot={{ r: 8 }} />
+      <Line type="monotone" dataKey="invoice" stroke="#820ad1" isAnimationActive={false} activeDot={{ r: 8 }} />
     </LineChart>
   );
 }

@@ -1,8 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
 
-import Chart from "../components/Chart";
-
 import { TemplateData } from "../types/entities";
 import { getCurrency } from "../utils/currency";
 import { chartToImage } from "../utils/chart";
