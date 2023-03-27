@@ -1,9 +1,20 @@
-import * as htmlToImage from 'html-to-image';
+import React from 'react';
+import { Global } from 'recharts';
 
-export async function chartToImage(elementId: string){
-  const chartElement = document.getElementById(elementId);
+import htmlSvgToPdfSvg from './imageFromSvg';
 
-  const response = await htmlToImage.toPng(chartElement);
 
-  return response;
-}
+export const ChartSvg = ({ children, width, height }) => {
+  return chartToPdfSvg(children, width, height);
+};
+
+const chartToPdfSvg = (children, width, height) => {
+  Global.set('isSsr', true);
+  const component = htmlSvgToPdfSvg(children);
+  Global.set('isSsr', false);
+
+  const result = React.cloneElement(component, { width, height });
+  return result;
+};
+
+export default ChartSvg;

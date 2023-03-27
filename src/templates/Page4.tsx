@@ -3,7 +3,8 @@ import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
 
 import { TemplateData } from "../types/entities";
 import { getCurrency } from "../utils/currency";
-import { chartToImage } from "../utils/chart";
+import ChartSvg from "../utils/chart";
+import Chart from "../components/Chart";
 
 const styles = StyleSheet.create({
   rowAlignCenter: {
@@ -75,8 +76,6 @@ interface TableProps {
 }
 
 function Page4({ data }: TableProps): JSX.Element {
-  const transactionsChartUrl = chartToImage("transactions-chart");
-
   return (
     <View>
       <View style={styles.titleWrapper}>
@@ -114,7 +113,9 @@ function Page4({ data }: TableProps): JSX.Element {
 
       <View style={styles.titleLine} />
 
-      <Image src={transactionsChartUrl} />
+      <ChartSvg width={800} height={600}>
+        <Chart />
+      </ChartSvg>
     </View>
   );
 }
