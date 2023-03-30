@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
-import ChartSvg from '../utils/chart';
 
 const chartData = [
   {
