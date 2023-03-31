@@ -1,13 +1,14 @@
 import React from "react";
-import { Circle, G, Image, Line, StyleSheet, Svg, Text, Tspan, View } from "@react-pdf/renderer";
+import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import Chart from "../components/Chart";
 
 import { TemplateData } from "../types/entities";
 import { getCurrency } from "../utils/currency";
-import { SVGToComponent } from "../utils/svg";
-import { svgTest } from "../utils/teste";
+
+import puppeteer from 'puppeteer';
+import ReactDOMServer from 'react-dom/server';
 
 const styles = StyleSheet.create({
   rowAlignCenter: {
@@ -71,6 +72,10 @@ const styles = StyleSheet.create({
   icon: {
     width: '8px',
     height: '8px'
+  },
+
+  chart: {
+    padding: '20px 80px 0px 80px',
   }
 });
 
@@ -78,12 +83,33 @@ interface TableProps {
   data: TemplateData;
 }
 
-function Page4({ data }: TableProps): JSX.Element {
-  const chartString = renderToStaticMarkup(<Chart />);
 
-  const convertedSvg = SVGToComponent(svgTest);
-  
-  console.log(convertedSvg);
+function renderToHtml(Component) {
+  const element = React.createElement(Component);
+  const html = ReactDOMServer.renderToString(element);
+  return html;
+}
+
+async function captureScreenshot(html, width, height) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  await page.setContent(html);
+  await page.setViewport({ width, height });
+
+  const buffer = await page.screenshot({ type: 'png' });
+
+  await browser.close();
+
+  return buffer;
+}
+
+
+function Page4({ data }: TableProps): JSX.Element {
+  const chartComponent = () => <Chart />;
+
+  const htmlChart = renderToHtml(chartComponent);
+  const buffer = async () => await captureScreenshot(htmlChart, 550, 300);
   
   return (
     <View>
@@ -122,8 +148,10 @@ function Page4({ data }: TableProps): JSX.Element {
 
       <View style={styles.titleLine} />
 
-      <Svg width="500" height="300" viewBox="0 0 500 300">{convertedSvg}</Svg>
-      <G   />
+
+      <View style={styles.chart}>
+        <Image source={buffer}/>
+      </View>
     </View>
   );
 }
