@@ -2,6 +2,16 @@ import React from 'react';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 
+import { StyleSheet } from "@react-pdf/renderer";
+
+const styles = StyleSheet.create({
+  chart: {
+    fontFamily: 'Montserrat',
+    fontWeight: 700,
+    fontSize: '14px',
+  }
+});
+
 const chartData = [
   {
     month: "Outubro",
@@ -42,11 +52,18 @@ function Chart(): JSX.Element {
         left: 20,
         bottom: 5,
       }}
+      style={styles.chart}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="month" />
-      <YAxis />
-      <Line type="monotone" dataKey="invoice" stroke="#820ad1" isAnimationActive={false} activeDot={{ r: 8 }} />
+      <XAxis dataKey="month" stroke='#333' />
+      <YAxis stroke='#333' />
+      <Line 
+        type="monotone"
+        dataKey="invoice"
+        stroke="#820ad1"
+        isAnimationActive={false}
+        activeDot={{ r: 8 }} 
+      />
     </LineChart>
   );
 }
