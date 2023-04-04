@@ -1,6 +1,5 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
-import { renderToStaticMarkup } from 'react-dom/server';
 
 import Chart from "../components/Chart";
 

@@ -6,63 +6,90 @@ import { StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   chart: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Helvetica',
     fontWeight: 700,
     fontSize: '14px',
-  }
+  },
 });
 
 const chartData = [
   {
-    month: "Outubro",
+    month: "Out/22",
     invoice: 1398,
   },
   {
-    month: "Novembro",
-    invoice: 9800,
+    month: "Nov/22",
+    invoice: 2800,
   },
   {
-    month: "Dezembro",
-    invoice: 3908,
+    month: "Dez/22",
+    invoice: 908,
   },
   {
-    month: "Janeiro",
+    month: "Jan/23",
     invoice: 4800,
   },
   {
-    month: "Fevereiro",
+    month: "Fev/23",
     invoice: 3800,
   },
   {
-    month: "Março",
+    month: "Mar/23",
     invoice: 4300,
   },
 ];
+
+const CustomizedAxisTick = (props) => {
+  const { x, y, payload } = props;
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <rect x={-25} y={10} width={65} height={30} rx={15} style={{ fill: "#820ad1" }} />
+      <text x={7} y={25} dy={5} textAnchor="middle" fill="#fff" fontFamily="Helvetica">
+        {payload.value}
+      </text>
+    </g>
+  );
+};
 
 function Chart(): JSX.Element {
   return (
     <LineChart
       id="transactions-chart"
-      width={500}
+      width={550}
       height={300}
       data={chartData}
       margin={{
         top: 5,
-        right: 30,
+        right: 50,
         left: 20,
         bottom: 5,
       }}
       style={styles.chart}
     >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="month" stroke='#333' />
-      <YAxis stroke='#333' />
+      <CartesianGrid strokeDasharray="2 4" stroke='black' strokeWidth={1}/>
+
+      <XAxis
+        dataKey="month"
+        height={60}
+        stroke="none"
+        tick={<CustomizedAxisTick />}
+      />
+
+      <YAxis 
+        stroke="none" 
+        tick={{fill: '#111'}}  
+        tickLine={{
+          strokeWidth: 1,
+        }}
+      />
       <Line 
-        type="monotone"
+        type="linear"
         dataKey="invoice"
         stroke="#820ad1"
+        strokeWidth={4}
+        dot={false}
         isAnimationActive={false}
-        activeDot={{ r: 8 }} 
       />
     </LineChart>
   );
