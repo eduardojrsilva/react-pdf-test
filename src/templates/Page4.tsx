@@ -74,7 +74,81 @@ const styles = StyleSheet.create({
   },
 
   chart: {
-    padding: '20px 80px 0px 80px',
+    padding: '20px 40px 0px 40px',
+  },
+  
+  monthsReference: {
+    display: 'flex',
+    margin: '0 auto',
+    textAlign: 'center',
+  
+    width: '160px',
+    padding: '5px 12px',
+
+    backgroundColor: '#9804d5',
+    borderRadius: '18px',
+    color: '#fff',
+    fontFamily: 'Montserrat',
+    fontWeight: 700,
+    fontSize: '14px',
+
+    marginTop: '20px',
+    marginBottom: '20px',
+  }, 
+
+  profitabilityPhrase: {
+    display: 'flex',
+    margin: '0 auto',
+
+    width: '280px',
+    fontFamily: 'Montserrat',
+    fontWeight: 500,
+    fontSize: '20px',
+    textAlign: 'center',
+  },
+
+  legendContainer: {
+    padding: '20px 30px 0px 78px',
+  },
+
+  line: {
+    width: '100%',
+    height: '1.2px',
+    backgroundColor: '#000',
+  },
+
+  legendContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: '0 auto',
+    marginTop: '20px',
+    gap: '10px',
+  },
+
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: '5px',
+  },
+
+  topTenColor: {
+    width: '20px',
+    height: '10px',
+    backgroundColor: '#54167c',
+    borderRadius: '10px',
+  }, 
+
+  ibovespaColor: {
+    width: '20px',
+    height: '10px',
+    backgroundColor: '#ba11e8',
+    borderRadius: '10px',
+  },
+
+  legendText: {
+    fontFamily: 'Montserrat',
+    fontSize: '13px',
   }
 });
 
@@ -108,7 +182,7 @@ function Page4({ data }: TableProps): JSX.Element {
   const chartComponent = () => <Chart />;
 
   const htmlChart = renderToHtml(chartComponent);
-  const buffer = async () => await captureScreenshot(htmlChart, 550, 300);
+  const buffer = async () => await captureScreenshot(htmlChart, 580, 300);
   
   return (
     <View>
@@ -147,10 +221,30 @@ function Page4({ data }: TableProps): JSX.Element {
 
       <View style={styles.titleLine} />
 
+      <Text style={styles.monthsReference}>Out/22 - Mar/23</Text>
+
+      <Text style={styles.profitabilityPhrase}>Rentabilidade acumulada desde o início</Text>
 
       <View style={styles.chart}>
         <Image source={buffer}/>
       </View>
+
+      <View style={styles.legendContainer}>
+        <Text style={styles.line}/>
+
+        <View style={styles.legendContent}>
+          <View style={styles.row}>
+            <Text style={styles.topTenColor}/>
+            <Text style={styles.legendText}>Top10</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.ibovespaColor}/>
+            <Text style={styles.legendText}>Ibovespa</Text>
+          </View>
+        </View>
+      </View>
+
     </View>
   );
 }

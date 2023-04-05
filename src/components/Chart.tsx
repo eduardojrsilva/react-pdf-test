@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ReferenceLine } from 'recharts';
 
 import { StyleSheet } from "@react-pdf/renderer";
 
@@ -15,27 +15,33 @@ const styles = StyleSheet.create({
 const chartData = [
   {
     month: "Out/22",
-    invoice: 1398,
+    ibovespa: 0,
+    top10: 0,
   },
   {
     month: "Nov/22",
-    invoice: 2800,
+    ibovespa: 18,
+    top10: 25,
   },
   {
     month: "Dez/22",
-    invoice: 908,
+    ibovespa: 5,
+    top10: 15,
   },
   {
     month: "Jan/23",
-    invoice: 4800,
+    ibovespa: 38,
+    top10: 41,
   },
   {
     month: "Fev/23",
-    invoice: 3800,
+    ibovespa: 25,
+    top10: 32,
   },
   {
     month: "Mar/23",
-    invoice: 4300,
+    ibovespa: 40,
+    top10: 45,
   },
 ];
 
@@ -44,8 +50,23 @@ const CustomizedAxisTick = (props) => {
 
   return (
     <g transform={`translate(${x},${y})`}>
-      <rect x={-25} y={10} width={65} height={30} rx={15} style={{ fill: "#820ad1" }} />
+      <rect x={-25} y={10} width={65} height={30} rx={15} style={{ fill: "#9804d5" }} />
       <text x={7} y={25} dy={5} textAnchor="middle" fill="#fff" fontFamily="Helvetica">
+        {payload.value}
+      </text>
+    </g>
+  );
+};
+
+const avg = 35;
+
+const CustomizedYAxisTick = (props) => {
+  const { x, y, payload } = props;
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <rect x={0} y={10} width={65} height={30} rx={15} style={{ fill: "#9804d5" }} />
+      <text x={32} y={25} dy={5} textAnchor="middle" fill="#fff" fontFamily="Helvetica">
         {payload.value}
       </text>
     </g>
@@ -56,7 +77,7 @@ function Chart(): JSX.Element {
   return (
     <LineChart
       id="transactions-chart"
-      width={550}
+      width={580}
       height={300}
       data={chartData}
       margin={{
@@ -67,7 +88,6 @@ function Chart(): JSX.Element {
       }}
       style={styles.chart}
     >
-      <CartesianGrid strokeDasharray="2 4" stroke='black' strokeWidth={1}/>
 
       <XAxis
         dataKey="month"
@@ -78,15 +98,34 @@ function Chart(): JSX.Element {
 
       <YAxis 
         stroke="none" 
-        tick={{fill: '#111'}}  
+        tick={{fill: '#3a3b3a'}}  
+        ticks={[0, 20, 40, 60]} 
         tickLine={{
           strokeWidth: 1,
         }}
+        tickFormatter={(tick) => {
+          const values = {
+            0: "00,00%",
+            20: "20,00%",
+            40: "40,00%",
+            60: "60,00%"
+          };
+          return values[tick];
+        }}
+      />
+
+      <Line 
+        type="linear"
+        dataKey="ibovespa"
+        stroke="#ba11e8"
+        strokeWidth={4}
+        dot={false}
+        isAnimationActive={false}
       />
       <Line 
         type="linear"
-        dataKey="invoice"
-        stroke="#820ad1"
+        dataKey="top10"
+        stroke="#54167c"
         strokeWidth={4}
         dot={false}
         isAnimationActive={false}
