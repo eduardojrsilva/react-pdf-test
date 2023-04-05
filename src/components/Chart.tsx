@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ReferenceLine } from 'recharts';
+import { LineChart, Line, XAxis, YAxis } from 'recharts';
 
 import { StyleSheet } from "@react-pdf/renderer";
+import { getCurrency } from '../utils/currency';
 
 const styles = StyleSheet.create({
   chart: {
@@ -40,7 +41,7 @@ const chartData = [
   },
   {
     month: "Mar/23",
-    ibovespa: 40,
+    ibovespa: 30,
     top10: 45,
   },
 ];
@@ -58,20 +59,23 @@ const CustomizedAxisTick = (props) => {
   );
 };
 
-const avg = 35;
+const CustomizedAverageLabel = (props) => {
+    const { x, y, average, index, color } = props;
+    const isLastPoint = index === chartData.length - 1;
 
-const CustomizedYAxisTick = (props) => {
-  const { x, y, payload } = props;
+    if (isLastPoint) {
+      return (
+        <g transform={`translate(${x},${y})`}>
+        <rect x={10} y={-15} width={75} height={30} rx={15} style={{ fill: color }} />
+        <text x={47} y={0} dy={5} textAnchor="middle" fill="#fff" fontFamily="Helvetica" fontSize={14}>
+          +{getCurrency(average)}%
+        </text>
+      </g>
+      );
+    }
 
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <rect x={0} y={10} width={65} height={30} rx={15} style={{ fill: "#9804d5" }} />
-      <text x={32} y={25} dy={5} textAnchor="middle" fill="#fff" fontFamily="Helvetica">
-        {payload.value}
-      </text>
-    </g>
-  );
-};
+    return null;
+}
 
 function Chart(): JSX.Element {
   return (
@@ -82,7 +86,7 @@ function Chart(): JSX.Element {
       data={chartData}
       margin={{
         top: 5,
-        right: 50,
+        right: 95,
         left: 20,
         bottom: 5,
       }}
@@ -121,7 +125,9 @@ function Chart(): JSX.Element {
         strokeWidth={4}
         dot={false}
         isAnimationActive={false}
+        label={<CustomizedAverageLabel color={"#ba11e8"} average={35.90} />}
       />
+
       <Line 
         type="linear"
         dataKey="top10"
@@ -129,6 +135,7 @@ function Chart(): JSX.Element {
         strokeWidth={4}
         dot={false}
         isAnimationActive={false}
+        label={<CustomizedAverageLabel color={"#54167c"} average={44.48} />}
       />
     </LineChart>
   );
